@@ -10,7 +10,9 @@ syntax match gdppDocCommentSingle "///.*$"
 syntax region gdppDocCommentMulti start="/\*\*" end="\*/" contains=gdppDocCommentMulti
 
 syntax keyword gdppKeyword class class_name ctor decl dtor enum enum_name extends extern extern_name func get impl import noimport set signal var
-syntax keyword gdppCppKeyword emit ExtPtr ExtRef memalloc memdelete memdelete_ext memfree memnew memnew_placement memnew_ext memrealloc null Ptr Ref
+syntax keyword gdppCppKeyword emit ExtPtr ExtRef memalloc memdelete memdelete_ext memfree memnew memnew_placement memnew_ext memrealloc null Ptr Ref This
+syntax keyword gdppCppStruct float32_t float64_t real_t
+highlight default link gdppCppStruct Type
 
 " Godot structs act as types.
 syntax keyword godotStruct Variant void bool int float String StringName NodePath Vector2 Vector2i Rect2 Vector3 Vector3i Transform2D Vector4 Vector4i Plane Quaternion AABB Basis Transform3D Projection Color RID Callable Signal Dictionary Array PackedByteArray PackedInt32Array PackedInt64Array PackedFloat32Array PackedFloat64Array PackedStringArray PackedVector2Array PackedVector3Array PackedVector4Array PackedColorArray
