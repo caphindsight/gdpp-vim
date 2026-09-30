@@ -10,7 +10,7 @@ syntax match gdppDocCommentSingle "///.*$"
 syntax region gdppDocCommentMulti start="/\*\*" end="\*/" contains=gdppDocCommentMulti
 
 syntax keyword gdppKeyword class class_name ctor decl dtor enum enum_name extends extern extern_name func get impl import noimport set signal var
-syntax keyword gdppCppKeyword claim emit ExtPtr ExtRef is_done memalloc memdelete memdelete_ext memfree memnew memnew_placement memnew_ext memrealloc null Ptr Ref rpc rpc This
+syntax keyword gdppCppKeyword cancel claim emit ExtPtr ExtRef is_canceled is_done memalloc memdelete memdelete_ext memfree memnew memnew_placement memnew_ext memrealloc null Ptr Ref rpc rpc This
 syntax keyword gdppCppStruct float32_t float64_t real_t Async
 highlight default link gdppCppStruct Type
 
