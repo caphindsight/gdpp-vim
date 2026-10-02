@@ -20,7 +20,7 @@ syntax match gdppRewrite "\%(\.\|->\|::\)\@3<!\<rpc\>\ze\%(\s*([^()]*)\)\=\s*\h\
 syntax match gdppRewrite "\<string_name\>\ze\s*\%(u8\|[uUL]\)\=R\=\""
 syntax match gdppRewrite "\%(\.\|->\|::\)\@3<!\<\%(is_done\|claim\|cancel\)\>\ze\s\+\%(\h\|::\)"
 syntax match gdppRewrite "\%(\%(\w\|[)\]]\)\s*\)\@80<=\<as\>\ze\s\+\%(\h\|::\)"
-syntax match gdppRewrite "\%(\.\|->\|::\)\@3<!\<guard\>\ze\s*(\%([^()]\|([^()]*)\)*)\s*\%({\|$\)"
+syntax match gdppRewrite "\%(\%(^\|[{};:)]\|\<\%(else\|do\)\>\)\s*\)\@80<=\%(\.\|->\|::\)\@3<!\<assert\>\ze\s*\%([[:alnum:]_"'(]\|[!*&][=&]\@!\)"
 
 " The runtime (gd++ man runtime), and godot-cpp's helpers.
 syntax keyword gdppThis This
