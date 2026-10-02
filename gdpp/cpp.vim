@@ -18,15 +18,18 @@ syntax keyword gdppRewrite emit
 syntax match gdppRewrite "\%(\.\|->\|::\)\@3<!\<is_cancelled\>\%(\s*(\)\@!"
 syntax match gdppRewrite "\%(\.\|->\|::\)\@3<!\<rpc\>\ze\%(\s*([^()]*)\)\=\s*\h\w*\%(\s*\%(\.\|->\)\s*\h\w*\)*\s*("
 syntax match gdppRewrite "\<string_name\>\ze\s*\%(u8\|[uUL]\)\=R\=\""
-syntax match gdppRewrite "\%(\.\|->\|::\)\@3<!\<\%(is_done\|claim\|cancel\|create\|destroy\)\>\ze\s\+\%(\h\|::\)"
+syntax match gdppRewrite "\%(\.\|->\|::\)\@3<!\<\%(is_done\|claim\|cancel\|create\|destroy\|queue_destroy\)\>\ze\s\+\%(\h\|::\)"
 syntax match gdppRewrite "\%(\%(\w\|[)\]]\)\s*\)\@80<=\<as\>\ze\s\+\%(\h\|::\)"
 syntax match gdppRewrite "\%(\%(^\|[{};:)]\|\<\%(else\|do\)\>\)\s*\)\@80<=\%(\.\|->\|::\)\@3<!\<assert\>\ze\s*\%([[:alnum:]_"'(]\|[!*&][=&]\@!\)"
 
 " The runtime (gd++ man runtime), and godot-cpp's helpers.
 syntax keyword gdppThis This
 syntax match gdppGd "\<gd\ze\s*::"
-syntax keyword gdppRuntimeType Async Emitted Ext ExtPtr ExtRef float64_t real_t Ref TypedArray TypedDictionary
-syntax keyword gdppMacro memnew memnew_arr memnew_placement memdelete memdelete_arr memalloc memrealloc memfree
+syntax keyword gdppRuntimeType Async Emitted Ext ExtPtr ExtRef float64_t real_t Ref TypedArray TypedDictionary Weak
+syntax keyword gdppMacro memnew_arr memnew_placement memdelete_arr memalloc memrealloc memfree
+" C++'s and godot-cpp's ways to create and delete objects stay plain, so that GD++'s create and destroy stand out.
+" A keyword defined later wins, so this overrides cpp.vim's new and delete.
+syntax keyword gdppPlain new delete memnew memdelete
 syntax keyword gdppMacro callable_mp callable_mp_static
 
 " Other types: names in PascalCase, like the compiler's own highlighting.

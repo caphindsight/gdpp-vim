@@ -29,8 +29,9 @@ $ vim my_godot_node.gd++
 - Declarations, like GD++ itself reads them: `func`, `var`, `signal`, `enum` and the rest are keywords only in declarations, so `node->set("x", 1)` in C++ code stays plain.
   Function, signal and variable names, types, enum values, annotations and node paths (`$Hud/Score`, `%Health`) have their own colors.
 - C++ code, with Vim's C++ highlighting: function bodies, initial and default values, `ctor`, `dtor`, `notif`, `get`, `set`, `decl` and `impl` blocks.
-- GD++'s rewrites, where GD++ rewrites them: `emit`, `rpc`, `is_cancelled`, `string_name "..."`, `is_done`, `claim`, `cancel`, `create`, `destroy`, `as` and `assert`.
+- GD++'s rewrites, where GD++ rewrites them: `emit`, `rpc`, `is_cancelled`, `string_name "..."`, `is_done`, `claim`, `cancel`, `create`, `destroy`, `queue_destroy`, `as` and `assert`.
   So `rpc("ping")`, `task.is_done()`, `Image::create(1, 1)`, a variable named `claim` and `assert = 1;` stay plain.
+  C++'s `new` and `delete`, and godot-cpp's `memnew` and `memdelete`, stay plain too, so that `create` and `destroy` stand out.
 - Comments, which nest like in GD++: `/* a /* b */ still a comment */`. Doc comments (`///` and `/** */`) stand out in declarations.
 - Godot's types. Refcounted classes (`Resource`, `Mesh`, ...) get a color of their own, apart from other classes (`Node`, `Object`, ...),
   since GD++ uses them differently. Other names in PascalCase, e.g. your own classes, are types too.
