@@ -28,7 +28,8 @@ $ vim my_godot_node.gd++
 
 - Declarations, like GD++ itself reads them: `func`, `var`, `signal`, `enum` and the rest are keywords only in declarations, so `node->set("x", 1)` in C++ code stays plain.
   Function, signal and variable names, types, enum values, annotations and node paths (`$Hud/Score`, `%Health`) have their own colors.
-- C++ code, with Vim's C++ highlighting: function bodies, initial and default values, `ctor`, `dtor`, `notif`, `get`, `set`, `decl` and `impl` blocks.
+- C++ code, with Vim's C++ highlighting: function bodies, initial and default values, `ctor`, `dtor`, `notif`, `get`, `set`, `decl` and `impl` blocks,
+  and engine blocks: `ready`, `enter_tree`, `exit_tree`, `process(delta)`, `physics_process(delta)` and `draw`. Their words are keywords only where they start a block, so `var ready` stays a name.
 - GD++'s rewrites, where GD++ rewrites them: `emit`, `rpc`, `is_cancelled`, `string_name "..."`, `is_done`, `claim`, `cancel`, `create`, `destroy`, `queue_destroy`, `as` and `assert`.
   So `rpc("ping")`, `task.is_done()`, `Image::create(1, 1)`, a variable named `claim` and `assert = 1;` stay plain.
   C++'s `new` and `delete`, and godot-cpp's `memnew` and `memdelete`, stay plain too, so that `create` and `destroy` stand out.
