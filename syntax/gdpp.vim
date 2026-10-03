@@ -69,7 +69,7 @@ syntax region gdppParams matchgroup=gdppParen start="(" end=")" contained contai
 " Variables and properties.
 syntax keyword gdppKeyword var nextgroup=gdppVarName skipwhite skipempty
 syntax match gdppVarName "\h\w*" contained nextgroup=gdppTypeHint,gdppPropBody skipwhite skipempty
-syntax region gdppPropBody matchgroup=gdppBrace start="{" end="}" contained contains=gdppAccessor,gdppCode,@gdppComments fold
+syntax region gdppPropBody matchgroup=gdppBrace start="{" end="}" contained contains=gdppAccessor,gdppCode,gdppAnnotation,@gdppComments fold
 syntax keyword gdppAccessor get contained nextgroup=gdppCppBlock skipwhite skipempty
 syntax keyword gdppAccessor set contained nextgroup=gdppSetParams skipwhite skipempty
 syntax region gdppSetParams matchgroup=gdppParen start="(" end=")" contained contains=gdppTypeHint,@gdppComments nextgroup=gdppCppBlock skipwhite skipempty
