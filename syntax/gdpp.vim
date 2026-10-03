@@ -90,7 +90,7 @@ syntax match gdppNotifName "\h\w*" contained
 " so they're keywords only where they start a block.
 syntax match gdppEngine "\<\%(ready\|enter_tree\|exit_tree\|draw\)\>\ze\_s*{" nextgroup=gdppCppBlock skipwhite skipempty
 syntax match gdppEngine "\<\%(process\|physics_process\)\>\ze\_s*(" nextgroup=gdppEngineArgs skipwhite skipempty
-syntax region gdppEngineArgs matchgroup=gdppParen start="(" end=")" contained contains=gdppEngineParam,@gdppComments nextgroup=gdppCppBlock skipwhite skipempty
+syntax region gdppEngineArgs matchgroup=gdppParen start="(" end=")" contained contains=gdppEngineParam,gdppTypeHint,@gdppComments nextgroup=gdppCppBlock skipwhite skipempty
 syntax match gdppEngineParam "\h\w*" contained
 syntax keyword gdppCode decl nextgroup=gdppCode,gdppCppBlock skipwhite skipempty
 syntax keyword gdppCode impl nextgroup=gdppCppBlock skipwhite skipempty
