@@ -25,8 +25,8 @@ syntax match gdppRewrite "\%(\%(^\|[{};:)]\|\<\%(else\|do\)\>\)\s*\)\@80<=\%(\.\
 
 " Macro invocations (gd++ man macros): invoke NAME(...) or invoke NAME { ... }, but not std::invoke(f).
 syntax match gdppInvoke "\%(\.\|->\|::\)\@3<!\<invoke\>\ze\s\+\h\w*\s*[({]" nextgroup=gdppInvokeName skipwhite
-" Macro blocks, macro { ... }: statements, which start the code or follow ";", "{" or "}".
-syntax match gdppMacroBlock "\%(\%(^\|[{};]\)\s*\)\@80<=\<macro\>\ze\_s*{" nextgroup=gdppMacroBody skipwhite skipempty
+" Macro blocks, invoke { ... }: statements, which start the code or follow ";", "{" or "}".
+syntax match gdppMacroBlock "\%(\%(^\|[{};]\)\s*\)\@80<=\<invoke\>\ze\_s*{" nextgroup=gdppMacroBody skipwhite skipempty
 
 " A template's holes, e.g. ${name}, which hold Lua. They're here, rather than in syntax/gdpp.vim, so that C's
 " regions, e.g. cParen, contain them too.

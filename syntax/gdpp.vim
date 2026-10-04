@@ -55,8 +55,8 @@ syntax region gdppCppBlock matchgroup=gdppBrace start="{" end="}" contains=@gdpp
 syntax region gdppValue matchgroup=gdppOperator start="=" end="\ze\s*\%(//.*\|/\*.*\)\=$" end="\ze[,)]" contains=gdppNodePath,gdppValueMacro,@gdppCpp
 syntax match gdppNodePath +\%(=\s*\)\@<=[$%]\%(\s*\%(\h\w*\|"\%(\\.\|[^"\\]\)*"\|'\%(\\.\|[^'\\]\)*'\|%\|/[/*]\@!\)\)*+ contained
 
-" A macro block as a value, e.g. var cells: int = macro { ... }. In C++ blocks, gdpp/cpp.vim matches it.
-syntax match gdppValueMacro "\%(=\s*\)\@<=\<macro\>\ze\_s*{" contained nextgroup=gdppMacroBody skipwhite skipempty
+" A macro block as a value, e.g. var cells: int = invoke { ... }. In C++ blocks, gdpp/cpp.vim matches it.
+syntax match gdppValueMacro "\%(=\s*\)\@<=\<invoke\>\ze\_s*{" contained nextgroup=gdppMacroBody skipwhite skipempty
 
 " Types, after ":", "->", extends, import and noimport.
 execute 'syntax match gdppTypeHint ":\_s*' . s:type . '" contained contains=@gdppTypes,gdppHole nextgroup=gdppPropBody skipwhite skipempty'
@@ -108,10 +108,10 @@ syntax keyword gdppCode decl nextgroup=gdppCode,gdppCppBlock skipwhite skipempty
 syntax keyword gdppCode impl nextgroup=gdppCppBlock skipwhite skipempty
 
 " Macros (Lua) and templates (GD++ with holes): inline, or with macro_name or template_name for the rest of the
-" file. A parameter's default is Lua. A macro block, macro { ... }, is a macro without a name or parameters.
+" file. A parameter's default is Lua. A macro block, invoke { ... }, is a macro without a name or parameters.
 syntax match gdppMacroKeyword "\<macro\>\ze\s\+\h\w*\s*(" nextgroup=gdppMacroName skipwhite
 syntax match gdppMacroKeyword "\<template\>\ze\s\+\h\w*\s*(" nextgroup=gdppTemplateName skipwhite
-syntax match gdppMacroKeyword "\<macro\>\ze\_s*{" nextgroup=gdppMacroBody skipwhite skipempty
+syntax match gdppMacroKeyword "\<invoke\>\ze\_s*{" nextgroup=gdppMacroBody skipwhite skipempty
 syntax keyword gdppMacroKeyword macro_name nextgroup=gdppMacroFileName skipwhite skipempty
 syntax keyword gdppMacroKeyword template_name nextgroup=gdppTemplateFileName skipwhite skipempty
 syntax match gdppMacroName "\h\w*" contained nextgroup=gdppMacroParams skipwhite
