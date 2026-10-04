@@ -18,9 +18,17 @@ syntax keyword gdppRewrite emit
 syntax match gdppRewrite "\%(\.\|->\|::\)\@3<!\<is_cancelled\>\%(\s*(\)\@!"
 syntax match gdppRewrite "\%(\.\|->\|::\)\@3<!\<rpc\>\ze\%(\s*([^()]*)\)\=\s*\h\w*\%(\s*\%(\.\|->\)\s*\h\w*\)*\s*("
 syntax match gdppRewrite "\<string_name\>\ze\s*\%(u8\|[uUL]\)\=R\=\""
-syntax match gdppRewrite "\%(\.\|->\|::\)\@3<!\<\%(is_done\|claim\|cancel\|create\|destroy\|queue_destroy\)\>\ze\s\+\%(\h\|::\)"
-syntax match gdppRewrite "\%(\%(\w\|[)\]]\)\s*\)\@80<=\<as\>\ze\s\+\%(\h\|::\)"
+" In a template, a hole may stand for the name, e.g. create ${T}.
+syntax match gdppRewrite "\%(\.\|->\|::\)\@3<!\<\%(is_done\|claim\|cancel\|create\|destroy\|queue_destroy\)\>\ze\s\+\%(\h\|::\|\${\)"
+syntax match gdppRewrite "\%(\%(\w\|[)\]]\)\s*\)\@80<=\<as\>\ze\s\+\%(\h\|::\|\${\)"
 syntax match gdppRewrite "\%(\%(^\|[{};:)]\|\<\%(else\|do\)\>\)\s*\)\@80<=\%(\.\|->\|::\)\@3<!\<assert\>\ze\s*\%([[:alnum:]_"'(]\|[!*&][=&]\@!\)"
+
+" Macro invocations (gd++ man macros): invoke NAME(...) or invoke NAME { ... }, but not std::invoke(f).
+syntax match gdppInvoke "\%(\.\|->\|::\)\@3<!\<invoke\>\ze\s\+\h\w*\s*[({]" nextgroup=gdppInvokeName skipwhite
+
+" A template's holes, e.g. ${name}, which hold Lua. They're here, rather than in syntax/gdpp.vim, so that C's
+" regions, e.g. cParen, contain them too.
+syntax region gdppHole matchgroup=gdppHoleDelim start="\${" end="}" contains=@gdppLua
 
 " The runtime (gd++ man runtime), and godot-cpp's helpers.
 syntax keyword gdppThis This
