@@ -28,8 +28,9 @@ $ vim my_godot_node.gd++
 
 - Declarations, like GD++ itself reads them: `func`, `var`, `signal`, `enum` and the rest are keywords only in declarations, so `node->set("x", 1)` in C++ code stays plain.
   Function, signal and variable names, types, enum values, annotations and node paths (`$Hud/Score`, `%Health`) have their own colors.
-- C++ code, with Vim's C++ highlighting: function bodies, initial and default values, `ctor`, `dtor`, `notif`, `get`, `set`, `decl` and `impl` blocks,
-  and engine blocks: `ready`, `enter_tree`, `exit_tree`, `process(delta)`, `physics_process(delta)` and `draw`. Their words are keywords only where they start a block, so `var ready` stays a name.
+- C++ code, with Vim's C++ highlighting: function bodies, initial and default values, `ctor`, `dtor`, `get`, `set`, `decl` and `impl` blocks,
+  and `on` blocks: `on ready { ... }`, `on process(delta: float) { ... }`, `on(what: int) { ... }` and the like. `on` is a keyword only where it starts a block, so `var on` stays a name.
+  Godot's notifications after it, e.g. `ready` and `predelete`, are keywords too, and other names, e.g. a class's own notifications, are constants.
 - GD++'s rewrites, where GD++ rewrites them: `emit`, `rpc`, `is_cancelled`, `string_name "..."`, `is_done`, `claim`, `cancel`, `create`, `destroy`, `queue_destroy`, `as` and `assert`.
   So `rpc("ping")`, `task.is_done()`, `Image::create(1, 1)`, a variable named `claim` and `assert = 1;` stay plain.
   C++'s `new` and `delete`, and godot-cpp's `memnew` and `memdelete`, stay plain too, so that `create` and `destroy` stand out.
@@ -44,9 +45,9 @@ and `godotNodeClass` (which links to `godotObjClass`) in your vimrc, e.g.:
 autocmd ColorScheme * highlight godotRefClass ctermfg=110 guifg=#87AFD7
 ```
 
-## Updating Godot's classes
+## Updating Godot's classes and notifications
 
-`gdpp/godot.vim` lists Godot's types. To regenerate it from your Godot version, with `godot` on your `PATH`:
+`gdpp/godot.vim` lists Godot's types, and `gdpp/notifications.vim` its notifications. To regenerate them from your Godot version, e.g. when a new one comes out, with `godot` on your `PATH`:
 
 ```
 $ make gen

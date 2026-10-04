@@ -83,20 +83,19 @@ syntax match gdppEnumValue "\h\w*" contained
 
 " Lifecycle, and C++ blocks.
 syntax keyword gdppKeyword ctor dtor nextgroup=gdppCppBlock skipwhite skipempty
-syntax keyword gdppKeyword notif nextgroup=gdppNotifArgs skipwhite skipempty
-syntax region gdppNotifArgs matchgroup=gdppParen start="(" end=")" contained contains=gdppNotifName,@gdppComments nextgroup=gdppCppBlock skipwhite skipempty
-syntax match gdppNotifName "\h\w*" contained
-" Engine blocks, e.g. ready { ... } and process(delta) { ... }. Their words are names elsewhere, e.g. in "var ready",
-" so they're keywords only where they start a block.
-syntax match gdppEngine "\<\%(ready\|enter_tree\|exit_tree\|draw\)\>\ze\_s*{" nextgroup=gdppCppBlock skipwhite skipempty
-syntax match gdppEngine "\<\%(process\|physics_process\)\>\ze\_s*(" nextgroup=gdppEngineArgs skipwhite skipempty
-syntax region gdppEngineArgs matchgroup=gdppParen start="(" end=")" contained contains=gdppEngineParam,gdppTypeHint,@gdppComments nextgroup=gdppCppBlock skipwhite skipempty
-syntax match gdppEngineParam "\h\w*" contained
+" on blocks, e.g. on ready { ... }, on process(delta: float) { ... } and on(what: int) { ... }. "on" is a name
+" elsewhere, e.g. in "var on", so it's a keyword only where it starts a block. Godot's notifications, from
+" gdpp/notifications.vim, are keywords after it; other names, e.g. a class's own notifications, are constants.
+syntax match gdppOn "\<on\>\ze\%(\_s\+\h\w*\)\=\_s*[({]" nextgroup=gdppNotification,gdppOnName,gdppOnArgs,gdppCppBlock skipwhite skipempty
+syntax match gdppOnName "\h\w*" contained nextgroup=gdppOnArgs,gdppCppBlock skipwhite skipempty
+syntax region gdppOnArgs matchgroup=gdppParen start="(" end=")" contained contains=gdppOnParam,gdppTypeHint,@gdppComments nextgroup=gdppCppBlock skipwhite skipempty
+syntax match gdppOnParam "\h\w*" contained
+execute 'source ' . fnameescape(expand('<sfile>:p:h:h') . '/gdpp/notifications.vim')
 syntax keyword gdppCode decl nextgroup=gdppCode,gdppCppBlock skipwhite skipempty
 syntax keyword gdppCode impl nextgroup=gdppCppBlock skipwhite skipempty
 
 " What a class's body holds, like the top of a file.
-syntax cluster gdppDecl contains=@gdppComments,gdppDocLine,gdppDocBlock,gdppAnnotation,gdppKeyword,gdppEngine,gdppExtends,gdppImport,gdppCode,gdppValue,gdppCppBlock
+syntax cluster gdppDecl contains=@gdppComments,gdppDocLine,gdppDocBlock,gdppAnnotation,gdppKeyword,gdppOn,gdppExtends,gdppImport,gdppCode,gdppValue,gdppCppBlock
 
 " Block comments nest, and C++ blocks can be long, so only the whole file tells what's what.
 syntax sync fromstart
@@ -144,9 +143,10 @@ highlight default link gdppClassName Type
 highlight default link gdppEnumName Type
 highlight default link gdppConstName Constant
 highlight default link gdppEnumValue Constant
-highlight default link gdppNotifName Constant
-highlight default link gdppEngine Keyword
-highlight default link gdppEngineParam Identifier
+highlight default link gdppOn Keyword
+highlight default link gdppNotification Keyword
+highlight default link gdppOnName Constant
+highlight default link gdppOnParam Identifier
 highlight default link gdppFuncName Function
 highlight default link gdppSignalName Function
 highlight default link gdppVarName Identifier
