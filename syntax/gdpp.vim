@@ -52,8 +52,11 @@ syntax region gdppAnnotationArgs start="(" end=")" contained contains=gdppString
 " the line (or a comment there), or to a "," or ")" in parameters, while no
 " bracket is open.
 syntax region gdppCppBlock matchgroup=gdppBrace start="{" end="}" contains=@gdppCpp fold
-syntax region gdppValue matchgroup=gdppOperator start="=" end="\ze\s*\%(//.*\|/\*.*\)\=$" end="\ze[,)]" contains=gdppNodePath,@gdppCpp
+syntax region gdppValue matchgroup=gdppOperator start="=" end="\ze\s*\%(//.*\|/\*.*\)\=$" end="\ze[,)]" contains=gdppNodePath,gdppValueMacro,@gdppCpp
 syntax match gdppNodePath +\%(=\s*\)\@<=[$%]\%(\s*\%(\h\w*\|"\%(\\.\|[^"\\]\)*"\|'\%(\\.\|[^'\\]\)*'\|%\|/[/*]\@!\)\)*+ contained
+
+" A macro block as a value, e.g. var cells: int = macro { ... }. In C++ blocks, gdpp/cpp.vim matches it.
+syntax match gdppValueMacro "\%(=\s*\)\@<=\<macro\>\ze\_s*{" contained nextgroup=gdppMacroBody skipwhite skipempty
 
 " Types, after ":", "->", extends, import and noimport.
 execute 'syntax match gdppTypeHint ":\_s*' . s:type . '" contained contains=@gdppTypes,gdppHole nextgroup=gdppPropBody skipwhite skipempty'
@@ -105,9 +108,10 @@ syntax keyword gdppCode decl nextgroup=gdppCode,gdppCppBlock skipwhite skipempty
 syntax keyword gdppCode impl nextgroup=gdppCppBlock skipwhite skipempty
 
 " Macros (Lua) and templates (GD++ with holes): inline, or with macro_name or template_name for the rest of the
-" file. A parameter's default is Lua.
+" file. A parameter's default is Lua. A macro block, macro { ... }, is a macro without a name or parameters.
 syntax match gdppMacroKeyword "\<macro\>\ze\s\+\h\w*\s*(" nextgroup=gdppMacroName skipwhite
 syntax match gdppMacroKeyword "\<template\>\ze\s\+\h\w*\s*(" nextgroup=gdppTemplateName skipwhite
+syntax match gdppMacroKeyword "\<macro\>\ze\_s*{" nextgroup=gdppMacroBody skipwhite skipempty
 syntax keyword gdppMacroKeyword macro_name nextgroup=gdppMacroFileName skipwhite skipempty
 syntax keyword gdppMacroKeyword template_name nextgroup=gdppTemplateFileName skipwhite skipempty
 syntax match gdppMacroName "\h\w*" contained nextgroup=gdppMacroParams skipwhite
@@ -201,6 +205,7 @@ highlight default link gdppTemplateName Function
 highlight default link gdppMacroFileName Function
 highlight default link gdppTemplateFileName Function
 highlight default link gdppMacroParam Identifier
+highlight default link gdppValueMacro Keyword
 highlight default link gdppInvoke Keyword
 highlight default link gdppInvokeName Function
 highlight default link gdppArgName Identifier
@@ -212,6 +217,7 @@ highlight default link gdppHoleDelim PreProc
 highlight default link gdppRewrite Keyword
 highlight default link gdppThis Keyword
 highlight default link gdppMacro Keyword
+highlight default link gdppMacroBlock Keyword
 highlight default link gdppGd Type
 highlight default link gdppRuntimeType Type
 highlight default link gdppUserType Type

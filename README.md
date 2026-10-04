@@ -34,10 +34,11 @@ $ vim my_godot_node.gd++
 - GD++'s rewrites, where GD++ rewrites them: `emit`, `rpc`, `is_cancelled`, `string_name "..."`, `is_done`, `claim`, `cancel`, `create`, `destroy`, `queue_destroy`, `as` and `assert`.
   So `rpc("ping")`, `task.is_done()`, `Image::create(1, 1)`, a variable named `claim` and `assert = 1;` stay plain.
   godot-cpp's `memnew` and `memdelete` stay plain too, so that `create` and `destroy` stand out.
-- Templates and macros (`gd++ man templates` and `gd++ man macros`): `template`, `template_name`, `macro` and `macro_name`, and their invocations, `invoke name(...)` and `invoke name { ... }`.
+- Templates and macros (`gd++ man templates` and `gd++ man macros`): `template`, `template_name`, `macro` and `macro_name`, their invocations, `invoke name(...)` and `invoke name { ... }`, and macro blocks, `macro { ... }`.
   A macro's body is Lua, with Vim's Lua highlighting, GD++'s comments, and `gd` and `ctx`. So are parameters' defaults and the Lua tables of invocations.
   A template's body is GD++, with its `${...}` holes highlighted as Lua, also inside names, e.g. `class ${T}Pool`, and in C++ code.
   In C++ code, `invoke` is a keyword only where a name and `(` or `{` follow, so `std::invoke(f)` stays plain. In C++ blocks, invocations end with `;`, e.g. `invoke log("hit");`.
+  There, `macro` is a keyword only where `{` follows and it starts a statement, e.g. `macro { gd.text("n++;") };`.
 - Comments, which nest like in GD++: `/* a /* b */ still a comment */`. Doc comments (`///` and `/** */`) stand out in declarations.
 - Godot's types. Refcounted classes (`Resource`, `Mesh`, ...) get a color of their own, apart from other classes (`Node`, `Object`, ...),
   since GD++ uses them differently. Other names in PascalCase, e.g. your own classes, are types too.
