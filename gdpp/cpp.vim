@@ -35,9 +35,8 @@ syntax keyword gdppThis This
 syntax match gdppGd "\<gd\ze\s*::"
 syntax keyword gdppRuntimeType Async Emitted Ext ExtPtr ExtRef float64_t real_t Ref TypedArray TypedDictionary Weak
 syntax keyword gdppMacro memnew_arr memnew_placement memdelete_arr memalloc memrealloc memfree
-" C++'s and godot-cpp's ways to create and delete objects stay plain, so that GD++'s create and destroy stand out.
-" A keyword defined later wins, so this overrides cpp.vim's new and delete.
-syntax keyword gdppPlain new delete memnew memdelete
+" godot-cpp's ways to create and delete objects stay plain, so that GD++'s create and destroy stand out.
+syntax keyword gdppPlain memnew memdelete
 syntax keyword gdppMacro callable_mp callable_mp_static
 
 " Other types: names in PascalCase, like the compiler's own highlighting.
