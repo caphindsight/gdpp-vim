@@ -37,14 +37,15 @@ $ vim my_godot_node.gd++
 - Templates and macros (`gd++ man templates` and `gd++ man macros`): `template`, `template_name`, `macro` and `macro_name`, their invocations, `invoke name(...)` and `invoke name { ... }`, and macro blocks, `invoke { ... }`.
   A macro's body is Lua, with Vim's Lua highlighting, GD++'s comments, and `gd` and `ctx`. So are parameters' defaults and the Lua tables of invocations.
   A template's body is GD++, with its `${...}` holes highlighted as Lua, also inside names, e.g. `class ${T}Pool`, and in C++ code.
+  The `${` and `}` of holes are bright blue, like in `gd++ man`.
   In C++ code, `invoke` is a keyword only where a name and `(` or `{` follow, or `{` follows and it starts a statement, so `std::invoke(f)` stays plain. In C++ blocks, invocations end with `;`, e.g. `invoke log("hit");`.
   Macro blocks are statements there too, e.g. `invoke { gd.text("n++;") };`.
 - Comments, which nest like in GD++: `/* a /* b */ still a comment */`. Doc comments (`///` and `/** */`) stand out in declarations.
 - Godot's types. Refcounted classes (`Resource`, `Mesh`, ...) get a color of their own, apart from other classes (`Node`, `Object`, ...),
   since GD++ uses them differently. Other names in PascalCase, e.g. your own classes, are types too.
 
-The colors of Godot's classes are defaults, for dark and light backgrounds. To pick your own, set the groups `godotRefClass`, `godotObjClass`
-and `godotNodeClass` (which links to `godotObjClass`) in your vimrc, e.g.:
+The colors of Godot's classes and of holes are defaults, for dark and light backgrounds. To pick your own, set the groups `godotRefClass`,
+`godotObjClass`, `godotNodeClass` (which links to `godotObjClass`) and `gdppHoleDelim` in your vimrc, e.g.:
 
 ```vim
 autocmd ColorScheme * highlight godotRefClass ctermfg=110 guifg=#87AFD7

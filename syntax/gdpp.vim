@@ -150,8 +150,9 @@ syntax cluster gdppDecl contains=@gdppComments,gdppDocLine,gdppDocBlock,gdppAnno
 syntax sync fromstart
 syntax spell notoplevel
 
-" Refcounted classes stand out from the others. The colors are defaults, so
-" a colorscheme or vimrc can set its own.
+" Refcounted classes stand out from the others, and the delimiters of
+" template holes are bright blue on any background, like in gd++ man. The
+" colors are defaults, so a colorscheme or vimrc can set its own.
 function! s:GodotColors() abort
   if &background ==# 'dark'
     highlight default godotObjClass ctermfg=205 guifg=#FF5FAF
@@ -160,6 +161,7 @@ function! s:GodotColors() abort
     highlight default godotObjClass ctermfg=162 guifg=#D70087
     highlight default godotRefClass ctermfg=97  guifg=#875FD7
   endif
+  highlight default gdppHoleDelim ctermfg=12 guifg=#5555FF
 endfunction
 call s:GodotColors()
 augroup gdppGodotColors
@@ -211,7 +213,6 @@ highlight default link gdppInvokeName Function
 highlight default link gdppArgName Identifier
 highlight default link gdppArgConstant Boolean
 highlight default link gdppArgCode Keyword
-highlight default link gdppHoleDelim PreProc
 
 " In C++ code, from gdpp/cpp.vim.
 highlight default link gdppRewrite Keyword
