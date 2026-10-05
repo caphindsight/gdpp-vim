@@ -108,10 +108,13 @@ syntax keyword gdppCode decl nextgroup=gdppCode,gdppCppBlock skipwhite skipempty
 syntax keyword gdppCode impl nextgroup=gdppCppBlock skipwhite skipempty
 
 " Macros (Lua) and templates (GD++ with holes): inline, or with macro_name or template_name for the rest of the
-" file. A parameter's default is Lua. A macro block, invoke { ... }, is a macro without a name or parameters.
+" file. A parameter's default is Lua. A macro block, invoke { ... }, is a macro without a name or parameters. So is
+" a macro library, macro { ... }, or macro_library for the rest of the file.
 syntax match gdppMacroKeyword "\<macro\>\ze\s\+\h\w*\s*(" nextgroup=gdppMacroName skipwhite
 syntax match gdppMacroKeyword "\<template\>\ze\s\+\h\w*\s*(" nextgroup=gdppTemplateName skipwhite
 syntax match gdppMacroKeyword "\<invoke\>\ze\_s*{" nextgroup=gdppMacroBody skipwhite skipempty
+syntax match gdppMacroKeyword "\<macro\>\ze\_s*{" nextgroup=gdppMacroBody skipwhite skipempty
+syntax keyword gdppMacroKeyword macro_library nextgroup=gdppMacroFile skipwhite skipempty
 syntax keyword gdppMacroKeyword macro_name nextgroup=gdppMacroFileName skipwhite skipempty
 syntax keyword gdppMacroKeyword template_name nextgroup=gdppTemplateFileName skipwhite skipempty
 syntax match gdppMacroName "\h\w*" contained nextgroup=gdppMacroParams skipwhite
