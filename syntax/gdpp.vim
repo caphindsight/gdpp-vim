@@ -44,8 +44,8 @@ syntax region gdppString start=+\%(u8\|[uUL]\)\="+ skip=+\\\\\|\\"+ end=+"+ end=
 syntax match gdppChar +\%(u8\|[uUL]\)\='\%(\\.\|[^'\\]\)*'+ contains=cSpecial
 syntax match gdppNumber "\%(\<\|\.\)\d\%([eEpP][+-]\|'\w\|[0-9A-Za-z_.]\)*"
 
-" Annotations, e.g. @export_range(0, 100, "or_greater").
-syntax match gdppAnnotation "@\h\w*" nextgroup=gdppAnnotationArgs
+" Annotations, e.g. @export_range(0, 100, "or_greater"), and user annotations, e.g. @@save("hp"), which only macros read.
+syntax match gdppAnnotation "@@\=\h\w*" nextgroup=gdppAnnotationArgs
 syntax region gdppAnnotationArgs start="(" end=")" contained contains=gdppString,gdppChar,gdppNumber,gdppHole,@gdppComments
 
 " C++ code: a block in braces, or a value after "=", which runs to the end of
@@ -58,15 +58,17 @@ syntax match gdppNodePath +\%(=\s*\)\@<=[$%]\%(\s*\%(\h\w*\|"\%(\\.\|[^"\\]\)*"\
 " A macro block as a value, e.g. var cells: int = invoke { ... }. In C++ blocks, gdpp/cpp.vim matches it.
 syntax match gdppValueMacro "\%(=\s*\)\@<=\<invoke\>\ze\_s*{" contained nextgroup=gdppMacroBody skipwhite skipempty
 
-" Types, after ":", "->", extends, import and noimport.
+" Types, after ":", "->", extends, implements, import and noimport.
 execute 'syntax match gdppTypeHint ":\_s*' . s:type . '" contained contains=@gdppTypes,gdppHole nextgroup=gdppPropBody skipwhite skipempty'
 execute 'syntax match gdppReturnType "->\_s*' . s:type . '" contained contains=@gdppTypes,gdppHole nextgroup=gdppCppBlock skipwhite skipempty'
 execute 'syntax match gdppTypeRef "' . s:type . '\%(\.\h\w*\)\=" contained contains=@gdppTypes,gdppHole'
 
-" Classes and externs.
-syntax keyword gdppKeyword class_name extern_name enum_name nextgroup=gdppDefName skipwhite skipempty
-syntax keyword gdppKeyword class extern nextgroup=gdppClassName skipwhite skipempty
+" Classes, externs and traits. implements lists traits, e.g. implements Damageable, Saveable.
+syntax keyword gdppKeyword class_name extern_name trait_name enum_name nextgroup=gdppDefName skipwhite skipempty
+syntax keyword gdppKeyword class extern trait nextgroup=gdppClassName skipwhite skipempty
 syntax keyword gdppExtends extends nextgroup=gdppTypeRef skipwhite skipempty
+syntax keyword gdppExtends implements nextgroup=gdppTypeList skipwhite skipempty
+execute 'syntax match gdppTypeList "' . s:type . '\%(\_s*,\_s*' . s:type . '\)*" contained contains=@gdppTypes,gdppHole'
 syntax keyword gdppImport import noimport nextgroup=gdppTypeRef skipwhite skipempty
 execute 'syntax match gdppDefName "' . s:name . '" contained contains=gdppHole'
 execute 'syntax match gdppClassName "' . s:name . '" contained contains=gdppHole nextgroup=gdppClassBody skipwhite skipempty'
@@ -106,6 +108,9 @@ syntax match gdppOnParam "\h\w*" contained
 execute 'source ' . fnameescape(expand('<sfile>:p:h:h') . '/gdpp/notifications.vim')
 syntax keyword gdppCode decl nextgroup=gdppCode,gdppCppBlock skipwhite skipempty
 syntax keyword gdppCode impl nextgroup=gdppCppBlock skipwhite skipempty
+
+" Declarations of user annotations: annotation save declares @@save.
+syntax keyword gdppKeyword annotation
 
 " Macros (Lua) and templates (GD++ with holes): inline, or with macro_name or template_name for the rest of the
 " file. A parameter's default is Lua. A macro block, invoke { ... }, is a macro without a name or parameters. So is
@@ -220,6 +225,7 @@ highlight default link gdppArgCode Keyword
 " In C++ code, from gdpp/cpp.vim.
 highlight default link gdppRewrite Keyword
 highlight default link gdppThis Keyword
+highlight default link gdppGdType Keyword
 highlight default link gdppMacro Keyword
 highlight default link gdppMacroBlock Keyword
 highlight default link gdppGd Type

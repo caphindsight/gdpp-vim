@@ -34,8 +34,10 @@ syntax region gdppHole matchgroup=gdppHoleDelim start="\${" end="}" contains=@gd
 
 " The runtime (gd++ man runtime), and godot-cpp's helpers.
 syntax keyword gdppThis This
+" Gd, the one type for objects, e.g. Gd<Node3D>, is a keyword, so it stands out from the class it holds.
+syntax keyword gdppGdType Gd
 syntax match gdppGd "\<gd\ze\s*::"
-syntax keyword gdppRuntimeType Async Emitted Ext ExtPtr ExtRef float64_t real_t Ref TypedArray TypedDictionary Weak
+syntax keyword gdppRuntimeType Async Emitted float64_t real_t Ref TypedArray TypedDictionary Weak
 syntax keyword gdppMacro memnew_arr memnew_placement memdelete_arr memalloc memrealloc memfree
 " godot-cpp's ways to create and delete objects stay plain, so that GD++'s create and destroy stand out.
 syntax keyword gdppPlain memnew memdelete

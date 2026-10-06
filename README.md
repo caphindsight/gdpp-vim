@@ -27,7 +27,8 @@ $ vim my_godot_node.gd++
 ## What it highlights
 
 - Declarations, like GD++ itself reads them: `func`, `var`, `signal`, `enum` and the rest are keywords only in declarations, so `node->set("x", 1)` in C++ code stays plain.
-  Function, signal and variable names, types, enum values, annotations and node paths (`$Hud/Score`, `%Health`) have their own colors.
+  Function, signal and variable names, types, enum values, annotations (`@export`, and user annotations like `@@save`) and node paths (`$Hud/Score`, `%Health`) have their own colors.
+  Traits too: `trait`, `trait_name`, and the traits after `implements`, e.g. `implements Damageable, Saveable`.
 - C++ code, with Vim's C++ highlighting: function bodies, initial and default values, `ctor`, `dtor`, `get`, `set`, `decl` and `impl` blocks,
   and `on` blocks: `on ready { ... }`, `on process(delta: float) { ... }`, `on(what: int) { ... }` and the like. `on` is a keyword only where it starts a block, so `var on` stays a name.
   Godot's notifications after it, e.g. `ready` and `predelete`, are keywords too, and other names, e.g. a class's own notifications, are constants.
@@ -35,13 +36,14 @@ $ vim my_godot_node.gd++
   So `rpc("ping")`, `task.is_done()`, `Image::create(1, 1)`, a variable named `claim` and `assert = 1;` stay plain.
   godot-cpp's `memnew` and `memdelete` stay plain too, so that `create` and `destroy` stand out.
 - Templates and macros (`gd++ man templates` and `gd++ man macros`): `template`, `template_name`, `macro` and `macro_name`, their invocations, `invoke name(...)` and `invoke name { ... }`, macro blocks, `invoke { ... }`,
-  and macro libraries, `macro { ... }` and `macro_library`.
+  and macro libraries, `macro { ... }` and `macro_library`. Also `annotation`, which declares a user annotation for macros, e.g. `annotation save` for `@@save`.
   A macro's or macro library's body is Lua, with Vim's Lua highlighting, GD++'s comments, and `gd` and `ctx`. So are parameters' defaults and the Lua tables of invocations.
   A template's body is GD++, with its `${...}` holes highlighted as Lua, also inside names, e.g. `class ${T}Pool`, and in C++ code.
   The `${` and `}` of holes are bright blue, like in `gd++ man`.
   In C++ code, `invoke` is a keyword only where a name and `(` or `{` follow, or `{` follows and it starts a statement, so `std::invoke(f)` stays plain. In C++ blocks, invocations end with `;`, e.g. `invoke log("hit");`.
   Macro blocks are statements there too, e.g. `invoke { gd.text("n++;") };`.
 - Comments, which nest like in GD++: `/* a /* b */ still a comment */`. Doc comments (`///` and `/** */`) stand out in declarations.
+- GD++'s runtime types in C++ code, e.g. `Async` and `Weak`. `Gd`, the one type for objects, e.g. `Gd<Node3D>`, is a keyword.
 - Godot's types. Refcounted classes (`Resource`, `Mesh`, ...) get a color of their own, apart from other classes (`Node`, `Object`, ...),
   since GD++ uses them differently. Other names in PascalCase, e.g. your own classes, are types too.
 
