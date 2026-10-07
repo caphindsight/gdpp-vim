@@ -42,8 +42,10 @@ $ vim my_godot_node.gd++
   The `${` and `}` of holes are bright blue, like in `gd++ man`.
   In C++ code, `invoke` is a keyword only where a name and `(` or `{` follow, or `{` follows and it starts a statement, so `std::invoke(f)` stays plain. In C++ blocks, invocations end with `;`, e.g. `invoke log("hit");`.
   Macro blocks are statements there too, e.g. `invoke { gd.text("n++;") };`.
+- Shaders (`gd++ man shaders`): `shader`, its name, parameters and return type, e.g. `-> Texture2D[rgba8]`, and its body, which is GLSL, with GLSL's types, qualifiers and built-in functions, and GD++'s `id` and `index`.
+  So are shader blocks, `shader { ... }`, and shader libraries, `shader_library` for the rest of the file.
 - Comments, which nest like in GD++: `/* a /* b */ still a comment */`. Doc comments (`///` and `/** */`) stand out in declarations.
-- GD++'s runtime types in C++ code, e.g. `Async` and `Weak`. `Gd`, the one type for objects, e.g. `Gd<Node3D>`, is a keyword.
+- GD++'s runtime types in C++ code, e.g. `Async`, `Weak` and `GpuArray`. `Gd`, the one type for objects, e.g. `Gd<Node3D>`, is a keyword.
 - Godot's types. Refcounted classes (`Resource`, `Mesh`, ...) get a color of their own, apart from other classes (`Node`, `Object`, ...),
   since GD++ uses them differently. Other names in PascalCase, e.g. your own classes, are types too.
 

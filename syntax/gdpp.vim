@@ -4,9 +4,10 @@
 "
 " GD++ has a declaration scope, whose syntax looks like GDScript, and C++ code
 " in braces: function bodies, initial values, decl and impl blocks and so on.
-" Macros hold Lua code, and templates GD++ code with ${...} holes.
-" This file highlights the declarations itself, gdpp/cpp.vim the C++ code, and
-" gdpp/lua.vim the Lua code.
+" Macros hold Lua code, and templates GD++ code with ${...} holes. Shaders,
+" shader blocks and shader libraries hold GLSL code.
+" This file highlights the declarations itself, gdpp/cpp.vim the C++ code,
+" gdpp/lua.vim the Lua code, and gdpp/glsl.vim the GLSL code.
 
 if exists("b:current_syntax")
   finish
@@ -22,12 +23,17 @@ unlet! b:current_syntax
 " condition, and the "}" that ends a macro's body, so leave them out. (:syntax clear doesn't work during the include.)
 syntax clear luaParenError luaError
 syntax sync clear
+" GLSL code, for shaders: the cluster @gdppGlsl.
+execute 'syntax include @gdppGlsl ' . fnameescape(expand('<sfile>:p:h:h') . '/gdpp/glsl.vim')
+unlet! b:current_syntax
 
 " A name, which in a template may have holes, e.g. ${T}Pool.
 let s:name = '\%(\h\|\${[^}]*}\)\%(\w\|\${[^}]*}\)*'
 " A type: a name, with type arguments in brackets, e.g. Dictionary[String, Array[int]].
 let s:type = s:name . '\%(\_s*\[\%(\_[^][]\|\[\%(\_[^][]\|\[\_[^][]*\]\)*\]\)*\]\)\='
-syntax cluster gdppTypes contains=godotBuiltinType,godotObjClass,godotRefClass,godotNodeClass,gdppRuntimeType,gdppUserType,cType,cppType
+syntax cluster gdppTypes contains=godotBuiltinType,godotObjClass,godotRefClass,godotNodeClass,gdppRuntimeType,gdppUserType,cType,cppType,gdppGpuFormat
+" The formats of images and textures that shaders write, e.g. Texture2D[rgba8].
+syntax keyword gdppGpuFormat r8 rg8 rgb8 rgba8 rf rgf rgbh rgbah rgbf rgbaf contained
 
 " Comments. Block comments nest, and /// and /** are doc comments, but //// and /*** aren't.
 syntax keyword gdppTodo contained TODO FIXME XXX NOTE
@@ -80,6 +86,17 @@ syntax keyword gdppKeyword signal nextgroup=gdppSignalName skipwhite skipempty
 execute 'syntax match gdppFuncName "' . s:name . '" contained contains=gdppHole nextgroup=gdppParams skipwhite skipempty'
 execute 'syntax match gdppSignalName "' . s:name . '" contained contains=gdppHole nextgroup=gdppParams skipwhite skipempty'
 syntax region gdppParams matchgroup=gdppParen start="(" end=")" contained contains=gdppTypeHint,gdppValue,gdppHole,@gdppComments nextgroup=gdppReturnType,gdppCppBlock skipwhite skipempty
+
+" Shaders, e.g. shader blur(size: Vector2i, src: Image) -> Image[rgba8] { ... }, whose body is GLSL, and shader
+" blocks, shader { ... }, which hold GLSL that shaders share. A shader library, shader_library, is GLSL for the rest
+" of the file.
+syntax keyword gdppKeyword shader nextgroup=gdppShaderName,gdppShaderBlock skipwhite skipempty
+execute 'syntax match gdppShaderName "' . s:name . '" contained contains=gdppHole nextgroup=gdppShaderParams skipwhite skipempty'
+syntax region gdppShaderParams matchgroup=gdppParen start="(" end=")" contained contains=gdppTypeHint,gdppValue,gdppHole,@gdppComments nextgroup=gdppShaderReturn skipwhite skipempty
+execute 'syntax match gdppShaderReturn "->\_s*' . s:type . '" contained contains=@gdppTypes,gdppHole nextgroup=gdppShaderBlock skipwhite skipempty'
+syntax region gdppShaderBlock matchgroup=gdppBrace start="{" end="}" contained contains=@gdppGlsl fold
+syntax keyword gdppShaderLibrary shader_library nextgroup=gdppShaderFile skipwhite skipempty
+syntax region gdppShaderFile start="\S" end="\%$" contained contains=@gdppGlsl
 
 " Variables and properties.
 syntax keyword gdppKeyword var nextgroup=gdppVarName skipwhite skipempty
@@ -152,7 +169,7 @@ syntax keyword gdppArgConstant true false null contained
 syntax match gdppArgCode "\<code\>\ze\_s*{" contained nextgroup=gdppCppBlock skipwhite skipempty
 
 " What a class's body holds, like the top of a file. A template's body holds the same, and holes.
-syntax cluster gdppDecl contains=@gdppComments,gdppDocLine,gdppDocBlock,gdppAnnotation,gdppKeyword,gdppOn,gdppExtends,gdppImport,gdppCode,gdppValue,gdppCppBlock,gdppMacroKeyword,gdppInvoke,gdppHole
+syntax cluster gdppDecl contains=@gdppComments,gdppDocLine,gdppDocBlock,gdppAnnotation,gdppKeyword,gdppOn,gdppExtends,gdppImport,gdppCode,gdppValue,gdppCppBlock,gdppMacroKeyword,gdppInvoke,gdppHole,gdppShaderLibrary
 
 " Block comments nest, and C++ blocks can be long, so only the whole file tells what's what.
 syntax sync fromstart
@@ -221,6 +238,9 @@ highlight default link gdppInvokeName Function
 highlight default link gdppArgName Identifier
 highlight default link gdppArgConstant Boolean
 highlight default link gdppArgCode Keyword
+highlight default link gdppShaderName Function
+highlight default link gdppShaderLibrary Keyword
+highlight default link gdppGpuFormat Type
 
 " In C++ code, from gdpp/cpp.vim.
 highlight default link gdppRewrite Keyword
@@ -231,6 +251,21 @@ highlight default link gdppMacroBlock Keyword
 highlight default link gdppGd Type
 highlight default link gdppRuntimeType Type
 highlight default link gdppUserType Type
+
+" In GLSL code, from gdpp/glsl.vim.
+highlight default link gdppGlslTodo Todo
+highlight default link gdppGlslLineComment Comment
+highlight default link gdppGlslComment Comment
+highlight default link gdppGlslNumber Number
+highlight default link gdppGlslBoolean Boolean
+highlight default link gdppGlslPreProc PreProc
+highlight default link gdppGlslStatement Statement
+highlight default link gdppGlslStructure Structure
+highlight default link gdppGlslQualifier StorageClass
+highlight default link gdppGlslType Type
+highlight default link gdppGlslFunction Function
+highlight default link gdppGlslBuiltin Identifier
+highlight default link gdppGlslCell Keyword
 
 " In Lua code, from gdpp/lua.vim.
 highlight default link gdppLuaLineComment Comment
