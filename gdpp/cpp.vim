@@ -24,6 +24,8 @@ syntax match gdppRewrite "\%(\.\|->\|::\)\@3<!\<await\>\ze\_s*[[:alpha:]_(]"
 " In a template, a hole may stand for the name, e.g. create ${T}.
 syntax match gdppRewrite "\%(\.\|->\|::\)\@3<!\<\%(is_done\|claim\|cancel\|create\|destroy\|queue_destroy\)\>\ze\s\+\%(\h\|::\|\${\)"
 syntax match gdppRewrite "\%(\%(\w\|[)\]]\)\s*\)\@80<=\<as\>\ze\s\+\%(\h\|::\|\${\)"
+" callable makes a Callable of a name, a string (a method by name), a lambda, or after its owner in parentheses.
+syntax match gdppRewrite "\%(\.\|->\|::\)\@3<!\<callable\>\ze\s*\%(\h\|::\|\${\|[\["(]\)"
 syntax match gdppRewrite "\%(\%(^\|[{};:)]\|\<\%(else\|do\)\>\)\s*\)\@80<=\%(\.\|->\|::\)\@3<!\<assert\>\ze\s*\%([[:alnum:]_"'(]\|[!*&][=&]\@!\)"
 
 " Macro invocations (gd++ man macros): invoke NAME(...) or invoke NAME { ... }, but not std::invoke(f).

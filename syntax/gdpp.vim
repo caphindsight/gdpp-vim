@@ -115,14 +115,19 @@ execute 'syntax match gdppEnumValue "' . s:name . '" contained contains=gdppHole
 
 " Lifecycle, and C++ blocks.
 syntax keyword gdppKeyword ctor dtor nextgroup=gdppCppBlock skipwhite skipempty
-" on blocks, e.g. on ready { ... }, on process(delta: float) { ... } and on(what: int) { ... }. "on" is a name
-" elsewhere, e.g. in "var on", so it's a keyword only where it starts a block. Godot's notifications, from
-" gdpp/notifications.vim, are keywords after it; other names, e.g. a class's own notifications, are constants.
-syntax match gdppOn "\<on\>\ze\%(\_s\+\h\w*\)\=\_s*[({]" nextgroup=gdppNotification,gdppOnName,gdppOnArgs,gdppCppBlock skipwhite skipempty
-syntax match gdppOnName "\h\w*" contained nextgroup=gdppOnArgs,gdppCppBlock skipwhite skipempty
-syntax region gdppOnArgs matchgroup=gdppParen start="(" end=")" contained contains=gdppOnParam,gdppTypeHint,@gdppComments nextgroup=gdppCppBlock skipwhite skipempty
+" Callbacks, i.e. on blocks, e.g. on ready { ... }, on process(delta: float) { ... }, on(what: int) { ... }, signals'
+" callbacks like on button.pressed { ... } and on this.died(by) { ... }, and property callbacks like on get(name) { ... }.
+" "on" is a name elsewhere, e.g. in "var on", so it's a keyword only where it starts a block. Godot's notifications,
+" from gdpp/notifications.vim, are keywords after it; other names, e.g. a class's own notifications, are constants.
+syntax match gdppOn "\<on\>\ze\%(\_s\+\h\w*\%(\s*\.\s*\h\w*\)\=\)\=\_s*\%([({]\|->\)" nextgroup=gdppOnSource,gdppNotification,gdppOnName,gdppOnArgs,gdppCppBlock skipwhite skipempty
+syntax match gdppOnName "\h\w*" contained nextgroup=gdppOnArgs,gdppReturnType,gdppCppBlock skipwhite skipempty
+" A signal's callback, e.g. button.pressed. After gdppOnName, since the last match that fits wins.
+syntax match gdppOnSource "\h\w*\s*\.\s*\h\w*" contained nextgroup=gdppOnArgs,gdppReturnType,gdppCppBlock skipwhite skipempty
+syntax region gdppOnArgs matchgroup=gdppParen start="(" end=")" contained contains=gdppOnParam,gdppTypeHint,@gdppComments nextgroup=gdppReturnType,gdppCppBlock skipwhite skipempty
 syntax match gdppOnParam "\h\w*" contained
 execute 'source ' . fnameescape(expand('<sfile>:p:h:h') . '/gdpp/notifications.vim')
+" Property callbacks, e.g. on get(name) { ... }, which may have a return type.
+syntax keyword gdppNotification contained nextgroup=gdppOnArgs,gdppReturnType,gdppCppBlock skipwhite skipempty get set get_property_list validate_property property_can_revert property_get_revert to_string
 syntax keyword gdppCode decl nextgroup=gdppCode,gdppCppBlock skipwhite skipempty
 syntax keyword gdppCode impl nextgroup=gdppCppBlock skipwhite skipempty
 
@@ -225,6 +230,7 @@ highlight default link gdppEnumValue Constant
 highlight default link gdppOn Keyword
 highlight default link gdppNotification Keyword
 highlight default link gdppOnName Constant
+highlight default link gdppOnSource Keyword
 highlight default link gdppOnParam Identifier
 highlight default link gdppFuncName Function
 highlight default link gdppSignalName Function
