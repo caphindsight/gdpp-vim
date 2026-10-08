@@ -18,6 +18,9 @@ syntax keyword gdppRewrite emit
 syntax match gdppRewrite "\%(\.\|->\|::\)\@3<!\<is_cancelled\>\%(\s*(\)\@!"
 syntax match gdppRewrite "\%(\.\|->\|::\)\@3<!\<rpc\>\ze\%(\s*([^()]*)\)\=\s*\h\w*\%(\s*\%(\.\|->\)\s*\h\w*\)*\s*("
 syntax match gdppRewrite "\<string_name\>\ze\s*\%(u8\|[uUL]\)\=R\=\""
+" In an await, string_name also takes a name in parentheses: await string_name(name), await x->string_name(name).
+syntax match gdppRewrite "\%(\<await\s\+\|->\s*\)\@40<=\<string_name\>\ze\s*("
+syntax match gdppRewrite "\%(\.\|->\|::\)\@3<!\<await\>\ze\_s*[[:alpha:]_(]"
 " In a template, a hole may stand for the name, e.g. create ${T}.
 syntax match gdppRewrite "\%(\.\|->\|::\)\@3<!\<\%(is_done\|claim\|cancel\|create\|destroy\|queue_destroy\)\>\ze\s\+\%(\h\|::\|\${\)"
 syntax match gdppRewrite "\%(\%(\w\|[)\]]\)\s*\)\@80<=\<as\>\ze\s\+\%(\h\|::\|\${\)"
@@ -37,7 +40,7 @@ syntax keyword gdppThis This
 " Gd, the one type for objects, e.g. Gd<Node3D>, is a keyword, so it stands out from the class it holds.
 syntax keyword gdppGdType Gd
 syntax match gdppGd "\<gd\ze\s*::"
-syntax keyword gdppRuntimeType Async Emitted float64_t real_t Ref TypedArray TypedDictionary Weak GpuArray GpuFormat
+syntax keyword gdppRuntimeType Async Emitted float32_t float64_t real_t Ref TypedArray TypedDictionary Weak GpuArray GpuFormat
 syntax keyword gdppMacro memnew_arr memnew_placement memdelete_arr memalloc memrealloc memfree
 " godot-cpp's ways to create and delete objects stay plain, so that GD++'s create and destroy stand out.
 syntax keyword gdppPlain memnew memdelete

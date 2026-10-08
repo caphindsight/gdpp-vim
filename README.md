@@ -32,7 +32,7 @@ $ vim my_godot_node.gd++
 - C++ code, with Vim's C++ highlighting: function bodies, initial and default values, `ctor`, `dtor`, `get`, `set`, `decl` and `impl` blocks,
   and `on` blocks: `on ready { ... }`, `on process(delta: float) { ... }`, `on(what: int) { ... }` and the like. `on` is a keyword only where it starts a block, so `var on` stays a name.
   Godot's notifications after it, e.g. `ready` and `predelete`, are keywords too, and other names, e.g. a class's own notifications, are constants.
-- GD++'s rewrites, where GD++ rewrites them: `emit`, `rpc`, `is_cancelled`, `string_name "..."`, `is_done`, `claim`, `cancel`, `create`, `destroy`, `queue_destroy`, `as` and `assert`.
+- GD++'s rewrites, where GD++ rewrites them: `emit`, `rpc`, `is_cancelled`, `string_name "..."`, `is_done`, `claim`, `cancel`, `create`, `destroy`, `queue_destroy`, `as`, `assert` and `await`, with `string_name(...)` after it.
   So `rpc("ping")`, `task.is_done()`, `Image::create(1, 1)`, a variable named `claim` and `assert = 1;` stay plain.
   godot-cpp's `memnew` and `memdelete` stay plain too, so that `create` and `destroy` stand out.
 - Templates and macros (`gd++ man templates` and `gd++ man macros`): `template`, `template_name`, `macro` and `macro_name`, their invocations, `invoke name(...)` and `invoke name { ... }`, macro blocks, `invoke { ... }`,
@@ -42,6 +42,7 @@ $ vim my_godot_node.gd++
   The `${` and `}` of holes are bright blue, like in `gd++ man`.
   In C++ code, `invoke` is a keyword only where a name and `(` or `{` follow, or `{` follows and it starts a statement, so `std::invoke(f)` stays plain. In C++ blocks, invocations end with `;`, e.g. `invoke log("hit");`.
   Macro blocks are statements there too, e.g. `invoke { gd.text("n++;") };`.
+  Invocations' C++ arguments, `code { ... }`, are C++, and their GLSL arguments, `glsl { ... }`, are GLSL.
 - Shaders (`gd++ man shaders`): `shader`, its name, parameters and return type, e.g. `-> Texture2D[rgba8]`, and its body, which is GLSL, with GLSL's types, qualifiers and built-in functions, and GD++'s `id` and `index`.
   So are shader blocks, `shader { ... }`, and shader libraries, `shader_library` for the rest of the file.
 - Comments, which nest like in GD++: `/* a /* b */ still a comment */`. Doc comments (`///` and `/** */`) stand out in declarations.

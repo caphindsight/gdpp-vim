@@ -156,10 +156,11 @@ syntax region gdppMacroFile start="\S" end="\%$" contained contains=@gdppLua
 syntax region gdppTemplateFile start="\S" end="\%$" contained contains=@gdppDecl
 
 " Invocations of macros and templates: invoke NAME(args), or invoke NAME { a Lua table }. In C++ code, gdpp/cpp.vim
-" matches "invoke". An argument is a value, or NAME = value, and a value may be a list, a dictionary or code { ... }.
+" matches "invoke". An argument is a value, or NAME = value, and a value may be a list, a dictionary, code { ... }
+" or glsl { ... }.
 syntax match gdppInvoke "\<invoke\>\ze\s\+\h\w*\s*[({]" nextgroup=gdppInvokeName skipwhite
 syntax match gdppInvokeName "\h\w*" contained nextgroup=gdppInvokeArgs,gdppInvokeTable skipwhite skipempty
-syntax cluster gdppArgs contains=gdppArgName,gdppArgConstant,gdppArgCode,gdppArgList,gdppArgDict,gdppString,gdppChar,gdppNumber,gdppHole,@gdppComments
+syntax cluster gdppArgs contains=gdppArgName,gdppArgConstant,gdppArgCode,gdppArgGlsl,gdppArgList,gdppArgDict,gdppString,gdppChar,gdppNumber,gdppHole,@gdppComments
 syntax region gdppInvokeArgs matchgroup=gdppParen start="(" end=")" contained contains=@gdppArgs
 syntax region gdppInvokeTable matchgroup=gdppBrace start="{" end="}" contained contains=@gdppLua
 syntax region gdppArgList matchgroup=gdppParen start="\[" end="]" contained contains=@gdppArgs
@@ -167,6 +168,8 @@ syntax region gdppArgDict matchgroup=gdppBrace start="{" end="}" contained conta
 syntax match gdppArgName "\h\w*\ze\s*=\%(=\)\@!" contained
 syntax keyword gdppArgConstant true false null contained
 syntax match gdppArgCode "\<code\>\ze\_s*{" contained nextgroup=gdppCppBlock skipwhite skipempty
+" GLSL code for macros, e.g. a shader's body: glsl { ... }.
+syntax match gdppArgGlsl "\<glsl\>\ze\_s*{" contained nextgroup=gdppShaderBlock skipwhite skipempty
 
 " What a class's body holds, like the top of a file. A template's body holds the same, and holes.
 syntax cluster gdppDecl contains=@gdppComments,gdppDocLine,gdppDocBlock,gdppAnnotation,gdppKeyword,gdppOn,gdppExtends,gdppImport,gdppCode,gdppValue,gdppCppBlock,gdppMacroKeyword,gdppInvoke,gdppHole,gdppShaderLibrary
@@ -238,6 +241,7 @@ highlight default link gdppInvokeName Function
 highlight default link gdppArgName Identifier
 highlight default link gdppArgConstant Boolean
 highlight default link gdppArgCode Keyword
+highlight default link gdppArgGlsl Keyword
 highlight default link gdppShaderName Function
 highlight default link gdppShaderLibrary Keyword
 highlight default link gdppGpuFormat Type
