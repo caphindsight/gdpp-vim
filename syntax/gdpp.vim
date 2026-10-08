@@ -69,9 +69,9 @@ execute 'syntax match gdppTypeHint ":\_s*' . s:type . '" contained contains=@gdp
 execute 'syntax match gdppReturnType "->\_s*' . s:type . '" contained contains=@gdppTypes,gdppHole nextgroup=gdppCppBlock skipwhite skipempty'
 execute 'syntax match gdppTypeRef "' . s:type . '\%(\.\h\w*\)\=" contained contains=@gdppTypes,gdppHole'
 
-" Classes, externs and traits. implements lists traits, e.g. implements Damageable, Saveable.
-syntax keyword gdppKeyword class_name extern_name trait_name enum_name nextgroup=gdppDefName skipwhite skipempty
-syntax keyword gdppKeyword class extern trait nextgroup=gdppClassName skipwhite skipempty
+" Classes, externs, traits and structs. implements lists traits, e.g. implements Damageable, Saveable.
+syntax keyword gdppKeyword class_name extern_name trait_name struct_name enum_name nextgroup=gdppDefName skipwhite skipempty
+syntax keyword gdppKeyword class extern trait struct nextgroup=gdppClassName skipwhite skipempty
 syntax keyword gdppExtends extends nextgroup=gdppTypeRef skipwhite skipempty
 syntax keyword gdppExtends implements nextgroup=gdppTypeList skipwhite skipempty
 execute 'syntax match gdppTypeList "' . s:type . '\%(\_s*,\_s*' . s:type . '\)*" contained contains=@gdppTypes,gdppHole'

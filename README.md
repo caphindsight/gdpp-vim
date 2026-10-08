@@ -29,6 +29,7 @@ $ vim my_godot_node.gd++
 - Declarations, like GD++ itself reads them: `func`, `var`, `signal`, `enum` and the rest are keywords only in declarations, so `node->set("x", 1)` in C++ code stays plain.
   Function, signal and variable names, types, enum values, annotations (`@export`, and user annotations like `@@save`) and node paths (`$Hud/Score`, `%Health`) have their own colors.
   Traits too: `trait`, `trait_name`, and the traits after `implements`, e.g. `implements Damageable, Saveable`.
+  And structs: `struct` and `struct_name`.
 - C++ code, with Vim's C++ highlighting: function bodies, initial and default values, `ctor`, `dtor`, `get`, `set`, `decl` and `impl` blocks,
   and callbacks, i.e. `on` blocks: `on ready { ... }`, `on process(delta) { ... }`, `on(what: int) { ... }`, signals' callbacks like `on button.pressed { ... }`, property callbacks like `on get(name) { ... }`, and the like. `on` is a keyword only where it starts a block, so `var on` stays a name.
   Godot's notifications after it, e.g. `ready` and `predelete`, are keywords too, and other names, e.g. a class's own notifications, are constants.
