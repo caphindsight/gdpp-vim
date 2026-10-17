@@ -34,7 +34,7 @@ $ vim my_godot_node.gd++
   and callbacks, i.e. `on` blocks: `on ready { ... }`, `on process(delta) { ... }`, `on(what: int) { ... }`, signals' callbacks like `on button.pressed { ... }`, property callbacks like `on get(name) { ... }`, and the like. `on` is a keyword only where it starts a block, so `var on` stays a name.
   Godot's notifications after it, e.g. `ready` and `predelete`, are keywords too, and other names, e.g. a class's own notifications, are constants.
 - GD++'s rewrites, where GD++ rewrites them: `emit`, `rpc`, `is_cancelled`, `string_name "..."`, `is_done`, `claim`, `cancel`, `create`, `destroy`, `queue_destroy`, `as`, `callable`, `assert` and `await`, with `string_name(...)` after it.
-  So `rpc("ping")`, `task.is_done()`, `Image::create(1, 1)`, a variable named `claim` and `assert = 1;` stay plain.
+  So `rpc("ping")`, `task.is_done()`, `Image::create(1, 1)`, a variable named `claim` and `s.assert(x);` stay plain.
   godot-cpp's `memnew` and `memdelete` stay plain too, so that `create` and `destroy` stand out.
 - Templates and macros (`gd++ man templates` and `gd++ man macros`): `template`, `template_name`, `macro` and `macro_name`, their invocations, `invoke name(...)` and `invoke name { ... }`, macro blocks, `invoke { ... }`,
   and macro libraries, `macro { ... }` and `macro_library`. Also `annotation`, which declares a user annotation for macros, e.g. `annotation save` for `@@save`.

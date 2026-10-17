@@ -26,7 +26,7 @@ syntax match gdppRewrite "\%(\.\|->\|::\)\@3<!\<\%(is_done\|claim\|cancel\|creat
 syntax match gdppRewrite "\%(\%(\w\|[)\]]\)\s*\)\@80<=\<as\>\ze\s\+\%(\h\|::\|\${\)"
 " callable makes a Callable of a name, a string (a method by name), a lambda, or after its owner in parentheses.
 syntax match gdppRewrite "\%(\.\|->\|::\)\@3<!\<callable\>\ze\s*\%(\h\|::\|\${\|[\["(]\)"
-syntax match gdppRewrite "\%(\%(^\|[{};:)]\|\<\%(else\|do\)\>\)\s*\)\@80<=\%(\.\|->\|::\)\@3<!\<assert\>\ze\s*\%([[:alnum:]_"'(]\|[!*&][=&]\@!\)"
+syntax match gdppRewrite "\%(\%(^\|[{};:)]\|\<\%(else\|do\)\>\)\s*\)\@80<=\%(\.\|->\|::\)\@3<!\<assert\>\ze\s*[^;[:space:]]"
 
 " Macro invocations (gd++ man macros): invoke NAME(...) or invoke NAME { ... }, but not std::invoke(f).
 syntax match gdppInvoke "\%(\.\|->\|::\)\@3<!\<invoke\>\ze\s\+\h\w*\s*[({]" nextgroup=gdppInvokeName skipwhite
